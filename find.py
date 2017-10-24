@@ -34,8 +34,8 @@ class StockBasics:
 		self.holders = df.holders
 
 def update_stock_base_info():
-	df = ts.get_concept_classified()
-	df.to_csv('./data/stock_concept.csv')
+#	df = ts.get_concept_classified()
+#	df.to_csv('./data/stock_concept.csv')
 
 #	df = ts.get_industry_classified()
 #	df.to_csv('./data/stock_industry.csv')
@@ -140,7 +140,7 @@ def stock_with_concept(concept):
 
 def update_data():
 	update_stock_base_info()
-	#update_k_data()
+	update_k_data()
 
 def choose_stocks():
 	df = pd.read_csv('./data/stock_basics.csv')
@@ -155,7 +155,11 @@ def choose_stocks():
 		is_rise_stock(k_data, 65, 20)		
 
 def find_stock_with_newstock():
-	slist = stock_with_concept("次新股")
+	slist_tmp = stock_with_concept("次新股")
+	slist = []
+	for code in slist_tmp:
+		k_data = pd.read_csv("./data/%06d.csv"%code)
+#		for 
 
 def find_stock_with_volume():
 	df = pd.read_csv('./data/stock_basics.csv')
@@ -183,6 +187,9 @@ def find_stock_with_rga(rga):
 	df = pd.read_csv('./data/stock_basics.csv')
 	for i in df.index:
 		stock0 = StockBasics(df.ix[i])
+		k_data = pd.read_csv("./data/%06d.csv"%stock0.code)
+		if len(k_data.index) > 66:
+			continue
 		str = red_green_array(stock0.code)
 		if rga in str:
 			print ("%06d"%stock0.code)
@@ -192,10 +199,10 @@ def debug():
 	find_stock_with_rga("011101010010010001010001111100011100001011100111101010000111")
 
 def start():
-#	slist = stock_with_concept("雄安新区")
 #	print (slist)
 	print("start...")
-	update_data()
+#	update_data()
+	find_stock_with_rga("1111111000")
 #	debug()
 #	find_stock_with_volume()
 
